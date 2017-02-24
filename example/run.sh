@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-mkdir generated
+mkdir generated 2> /dev/null
 
 protoc\
   --plugin=${DIR}/protoc-gen-logger \

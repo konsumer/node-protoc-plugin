@@ -1,0 +1,18 @@
+#! /usr/bin/env node
+
+// Create a simple log of incoming CodeGeneratorRequest messages
+
+const { CodeGeneratorRequest, CodeGeneratorResponse } = require('../src/index.js')
+
+process.stdin.on('data', data => {
+  const response = CodeGeneratorResponse({
+    file: [
+      {
+        name: 'parse_log.js',
+        content: JSON.stringify(CodeGeneratorRequest(data), null, 2)
+      }
+    ]
+  })
+  process.stdout.write(response)
+})
+

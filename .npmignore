@@ -8,4 +8,7 @@ logs
 # Dependency directories
 node_modules
 
+# Ignore these for npm publish
+proto/
+example/
 generated/

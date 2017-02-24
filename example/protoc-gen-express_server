@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 // create an express JSON rpc server
+// NOT FINISHED
 
 const { CodeGeneratorRequest, CodeGeneratorResponse } = require('../src/index.js')
 

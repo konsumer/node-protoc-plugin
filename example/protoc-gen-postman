@@ -1,0 +1,26 @@
+#! /usr/bin/env node
+
+// generate a postman collection
+
+const { CodeGeneratorRequest, CodeGeneratorResponse, parseWithoutImports } = require('../src/index.js')
+
+process.stdin.on('data', data => {
+  const incoming = CodeGeneratorRequest(data)
+  incoming.fileToGenerate
+    .map(parseWithoutImports)
+    .forEach(desc => {
+      desc.then(info => {
+        console.log(info)
+      })
+    })
+
+  // const response = CodeGeneratorResponse({
+  //   file: [
+  //     {
+  //       name: 'parse_log.js',
+  //       content: JSON.stringify(CodeGeneratorRequest(data), null, 2)
+  //     }
+  //   ]
+  // })
+  // process.stdout.write(response)
+})

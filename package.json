@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "./example/run.sh",
-    "generate_pb": "pbjs  --no-beautify --keep-case --no-comments --no-verify --no-create --no-delimited -t static-module -w commonjs ./proto/google/protobuf/compiler/plugin.proto ./proto/google/protobuf/descriptor.proto -o plugin_pb.js"
+    "pb": "pbjs  --keep-case -t static-module -w commonjs ./proto/google/protobuf/compiler/plugin.proto ./proto/google/protobuf/descriptor.proto -o src/plugin_pb.js"
   },
   "repository": {
     "type": "git",

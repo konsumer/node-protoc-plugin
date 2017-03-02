@@ -28,10 +28,7 @@ Since it's a promise, you can `throw` or just return `Promise.reject('reason')`,
 Once you have made your plugin, save it as `protoc-gen-NAME`, give it executable permissions, then run it like this:
 
 ```
-protoc \
-  --plugin=protoc-gen-NAME \
-  --NAME_out=generated \
-  yourfile.proto
+protoc --plugin=protoc-gen-NAME --NAME_out=generated yourfile.proto
 ```
 
 If you put it in your path, you don't need the `--plugin=protoc-gen-NAME` part.

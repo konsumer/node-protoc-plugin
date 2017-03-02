@@ -17,7 +17,8 @@
   "keywords": [
     "proto",
     "protobuf",
-    "protoc"
+    "protoc",
+    "plugin"
   ],
   "author": "David Konsumer <konsumer@jetboystudio.com>",
   "license": "MIT",

@@ -5,7 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "test": "./example/run.sh",
-    "pb": "pbjs  --keep-case -t static-module -w commonjs ./proto/google/protobuf/compiler/plugin.proto ./proto/google/protobuf/descriptor.proto -o src/plugin_pb.js"
+    "pb": "protoc -I proto/ proto/google/api/http.proto proto/google/api/annotations.proto proto/google/protobuf/compiler/plugin.proto --js_out=import_style=commonjs,binary:src/",
+    "version": "npm run pb",
+    "postversion": "git push && git push --tags",
+    "release": "npm version patch"
   },
   "repository": {
     "type": "git",
@@ -23,11 +26,12 @@
   },
   "homepage": "https://github.com/konsumer/node-protoc-plugin#readme",
   "dependencies": {
-    "protobufjs": "^6.6.3"
+    "buffer-to-uint8array": "^1.1.0",
+    "google-protobuf": "^3.2.0",
+    "stream-to-promise": "^2.2.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "release-it": "^2.5.4"
+    "mocha": "^3.2.0"
   }
 }

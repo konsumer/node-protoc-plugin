@@ -10,8 +10,3 @@ protoc\
   ${DIR}/../proto/helloworld.proto \
   --logger_out=generated
 
-protoc\
-  --plugin=${DIR}/protoc-gen-express_server \
-  -I ${DIR}/../proto \
-  ${DIR}/../proto/helloworld.proto \
-  --express_server_out=generated

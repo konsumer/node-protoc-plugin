@@ -8,7 +8,7 @@
     "pb": "protoc -I proto/ proto/google/api/http.proto proto/google/api/annotations.proto proto/google/protobuf/compiler/plugin.proto --js_out=import_style=commonjs,binary:src/",
     "version": "npm run pb",
     "postversion": "git push && git push --tags",
-    "release": "npm version patch"
+    "release": "npm version patch && npm publish"
   },
   "repository": {
     "type": "git",

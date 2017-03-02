@@ -28,7 +28,7 @@ Since it's a promise, you can `throw` or just return `Promise.reject('reason')`,
 
 Once you have made your plugin, save it as `protoc-gen-NAME`, give it executable permissions, then run it like this:
 
-```
+```sh
 protoc --plugin=protoc-gen-NAME --NAME_out=generated yourfile.proto
 ```
 
@@ -40,7 +40,16 @@ If you need more from the incoming stdin `CodeGeneratorRequest` have a look at `
 
 ### extensions
 
-I am currently including `google/api/annotations` proto file, so gRPC-annotions will work (for example see `proto/helloworld.proto`) For any other extensions, you will need to generate the `google-protobuf` representation, and require it before parsing. You can easily generate them with a command like this:
+I am currently including `google/api/annotations` proto file, so gRPC-annotions will work oout of the box (for example see `proto/helloworld.proto`) For any other extensions, you will need to generate the `google-protobuf` representation, and require it before parsing. You can easily generate them with a command like this:
+
+```sh
+protoc --js_out=import_style=commonjs,binary:YOURDIR/ -I PROTODIR/ PROTODIR/YOURFILE.proto
 ```
-protoc --js_out=import_style=commonjs,binary:YOURDIR/ -I PROTO_DIR/ PROTO_DIR/YOUR_FILE.proto proto/google/api/annotations.proto
+
+then require like this:
+
+```js
+require('./NAMESPACE_pb')
 ```
+
+You can see how I have done this with `google/api/annotations_pb` in `index.js`.

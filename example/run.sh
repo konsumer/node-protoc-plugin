@@ -22,9 +22,16 @@ protoc \
   ${DIR}/../proto/helloworld.proto \
   --extendedlogger_out=${DIR}/../generated
 
-# make an error
+# test express generator
 protoc \
-  --plugin=${DIR}/protoc-gen-error \
+  --plugin=${DIR}/protoc-gen-express \
   -I ${DIR}/../proto \
   ${DIR}/../proto/helloworld.proto \
-  --error_out=${DIR}/../generated
+  --express_out=${DIR}/../generated
+
+# make an error
+# protoc \
+#   --plugin=${DIR}/protoc-gen-error \
+#   -I ${DIR}/../proto \
+#   ${DIR}/../proto/helloworld.proto \
+#   --error_out=${DIR}/../generated

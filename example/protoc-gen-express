@@ -1,0 +1,67 @@
+#! /usr/bin/env node
+
+// Generates express middleware that matches the gRPC annotations
+
+const protocPlugin = require('../src/index')
+
+const genRoute = (service, pkg) => service.methodList.map(s => {
+  let routes = ''
+  if (s.options.http) {
+    ['get', 'post', 'put', 'patch', 'pb_delete'].forEach(m => {
+      if (s.options.http[m]) {
+        const method = m === 'pb_delete' ? 'delete' : m
+        // TODO: get URL params
+        const url = s.options.http[m]
+        routes += `
+  // implementation.${pkg}.${service.name}.${s.name}(pb${s.inputType}) → pb${s.outputType}
+  router.${method}('${url}', (req, res) => {
+    // TODO: verify in & out
+  })
+`
+      }
+    })
+  }
+  return routes
+}).join('')
+
+protocPlugin(protos => {
+  const files = []
+  protos.forEach(proto => {
+    const router = `// gRPC router from ${proto.name}
+// use it in your express app like this:
+// const router = require('./${proto.pb_package}_router')
+// const implementation = require('./${proto.pb_package}_implementation')
+// app.use('/api', router(implementation))
+
+const express = require('express')
+
+module.exports = implementation => {
+  const router = express()
+${proto.serviceList.map(service => genRoute(service, proto.pb_package))}
+  return router
+}
+
+`
+    let implementation = `// gRPC implementation from ${proto.name}
+module.exports = {
+${proto.serviceList.map(service => {
+  return `  ${service.name}: {
+${service.methodList.map(s => `    ${s.name}: input => {
+      // (pb${s.inputType}) → pb${s.outputType}
+    }`).join(',\n')}`
+}).join('\n')}
+  }
+}
+`
+
+    files.push({
+      name: `${proto.pb_package}_router.js`,
+      content: router
+    })
+    files.push({
+      name: `${proto.pb_package}_implementation.js`,
+      content: implementation
+    })
+  })
+  return files
+})

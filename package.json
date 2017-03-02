@@ -4,7 +4,7 @@
   "description": "Create protoc code-generation plugins easily in nodejs",
   "main": "src/index.js",
   "scripts": {
-    "test": "./example/run.sh",
+    "test": "jest",
     "pb": "protoc -I proto/ proto/google/api/http.proto proto/google/api/annotations.proto proto/google/protobuf/compiler/plugin.proto --js_out=import_style=commonjs,binary:src/",
     "version": "npm run pb",
     "postversion": "git push && git push --tags",
@@ -30,5 +30,8 @@
     "buffer-to-uint8array": "^1.1.0",
     "google-protobuf": "^3.2.0",
     "stream-to-promise": "^2.2.0"
+  },
+  "devDependencies": {
+    "jest": "^19.0.2"
   }
 }

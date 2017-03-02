@@ -39,7 +39,7 @@ const CodeGeneratorResponse = (stdout = process.stdout) => (files) => {
 const CodeGeneratorResponseError = (stdout = process.stdout) => (err) => {
   const out = new pluginPb.CodeGeneratorResponse()
   out.setError(err)
-  stdout.write(out.serializeBinary())
+  stdout.write(new Buffer(out.serializeBinary()))
 }
 
 /**

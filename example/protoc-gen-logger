@@ -4,10 +4,13 @@
 
 const protocPlugin = require('../src/index')
 
-protocPlugin(protos => protos.map(proto => ({
-  name: `${proto.pb_package}.json`,
-  content: JSON.stringify(proto, null, 2)
-})))
+protocPlugin(protos => protos.map(proto => {
+  console.error(`Working on ${proto.pb_package}.`)
+  return {
+    name: `${proto.pb_package}.json`,
+    content: JSON.stringify(proto, null, 2)
+  }
+}))
 .then(() => {
   // I use error, because stdout is used for plugin
   console.error('Complete.')

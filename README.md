@@ -13,6 +13,7 @@ Create protoc code-generation plugins easily in nodejs
 You can checkout the code in the `example/` dir, but here is a quick example:
 
 ```js
+#! /usr/bin/env node
 const protocPlugin = require('protoc-plugin')
 
 protocPlugin(protos => {
@@ -33,6 +34,10 @@ protoc --plugin=protoc-gen-NAME --NAME_out=generated yourfile.proto
 
 If you put it in your path, you don't need the `--plugin=protoc-gen-NAME` part.
 
-# advanced usage
+## advanced usage
 
 If you need more from the incoming stdin `CodeGeneratorRequest` have a look at `example/protoc-gen-extendedlogger`.
+
+### extensions
+
+I am currently including `google/api/annotations` proto file, so gRPC-annotions will work (for example see `proto/helloworld.proto`)

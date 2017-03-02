@@ -2,21 +2,13 @@
 
 // Create a simple log of incoming CodeGeneratorRequest messages
 
-const {CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponseError} = require('../src/index')
+const protocPlugin = require('../src/index')
 
-// demo
-CodeGeneratorRequest()
-  .then(r => {
-    // convert to object
-    // alternately, you can do all the google-protobuf stuff here
-    const req = r.toObject()
-    // just get proto files that are being parsed directly by protoc
-    const protos = req.protoFileList.filter(p => req.fileToGenerateList.indexOf(p.name) !== -1)
-    // return array of file objects: [{name, contents, insertion_point}]
-    return protos.map(proto => ({
-      name: `${proto.pb_package}.json`,
-      content: JSON.stringify(proto, null, 2)
-    }))
-  })
-  .then(CodeGeneratorResponse())
-  .catch(CodeGeneratorResponseError())
+protocPlugin(protos => protos.map(proto => ({
+  name: `${proto.pb_package}.json`,
+  content: JSON.stringify(proto, null, 2)
+})))
+.then(() => {
+  // I use error, because stdout is used for plugin
+  console.error('Complete.')
+})

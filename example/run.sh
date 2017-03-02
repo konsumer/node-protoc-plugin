@@ -10,3 +10,8 @@ protoc\
   ${DIR}/../proto/helloworld.proto \
   --logger_out=generated
 
+protoc\
+  --plugin=${DIR}/protoc-gen-extendedlogger \
+  -I ${DIR}/../proto \
+  ${DIR}/../proto/helloworld.proto \
+  --extendedlogger_out=generated

@@ -34,6 +34,8 @@ protoc --plugin=protoc-gen-NAME --NAME_out=generated yourfile.proto
 
 If you put it in your path, you don't need the `--plugin=protoc-gen-NAME` part.
 
+> **PRO TIP** - use [npm's `bin`](https://docs.npmjs.com/files/package.json#bin) in your package.json to get your plugin script installed, cross-platform, in the user's path.
+
 ## advanced usage
 
 If you need more from the incoming stdin `CodeGeneratorRequest` have a look at `example/protoc-gen-extendedlogger`.

@@ -5,7 +5,10 @@ const { createReadStream } = require('fs')
 
 const {CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponseError} = require('../src/index')
 
+// make a fake stdin stream from the parsed version of helloworld.proto
 const mockIn = () => createReadStream(`${__dirname}/helloworld.pbf`)
+
+// make a fake stdout stream that expects to be passed the snapshot value
 const mockOut = (done) => new Writable({
   write (chunk, encoding, callback) {
     expect(chunk).toMatchSnapshot()

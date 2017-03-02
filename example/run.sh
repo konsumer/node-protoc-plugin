@@ -9,15 +9,22 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir ${DIR}/../generated 2> /dev/null
 
 # test out simple JSON logger
-protoc\
+protoc \
   --plugin=${DIR}/protoc-gen-logger \
   -I ${DIR}/../proto \
   ${DIR}/../proto/helloworld.proto \
   --logger_out=${DIR}/../generated
 
 # test out more advanced JSON logger
-protoc\
+protoc \
   --plugin=${DIR}/protoc-gen-extendedlogger \
   -I ${DIR}/../proto \
   ${DIR}/../proto/helloworld.proto \
   --extendedlogger_out=${DIR}/../generated
+
+# make an error
+protoc \
+  --plugin=${DIR}/protoc-gen-error \
+  -I ${DIR}/../proto \
+  ${DIR}/../proto/helloworld.proto \
+  --error_out=${DIR}/../generated

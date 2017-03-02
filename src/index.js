@@ -38,7 +38,7 @@ const CodeGeneratorResponse = (stdout = process.stdout) => (files) => {
  */
 const CodeGeneratorResponseError = (stdout = process.stdout) => (err) => {
   const out = new pluginPb.CodeGeneratorResponse()
-  out.setError(err)
+  out.setError(err.toString())
   stdout.write(new Buffer(out.serializeBinary()))
 }
 
@@ -53,8 +53,8 @@ const simplePlugin = (cb) => CodeGeneratorRequest()
     return req.protoFileList.filter(p => req.fileToGenerateList.indexOf(p.name) !== -1)
   })
   .then(cb)
-  .then(CodeGeneratorResponse())
   .catch(CodeGeneratorResponseError())
+  .then(CodeGeneratorResponse())
 
 module.exports = simplePlugin
 module.exports.CodeGeneratorRequest = CodeGeneratorRequest

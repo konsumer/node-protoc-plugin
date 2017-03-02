@@ -1,0 +1,9 @@
+#! /usr/bin/env node
+
+// Create an intentional error
+
+const protocPlugin = require('../src/index')
+
+protocPlugin(protos => protos.map(proto => {
+  return Promise.reject('expected error.')
+}))

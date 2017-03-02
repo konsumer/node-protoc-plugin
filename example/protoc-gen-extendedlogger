@@ -14,7 +14,7 @@ CodeGeneratorRequest()
     const protos = req.protoFileList.filter(p => req.fileToGenerateList.indexOf(p.name) !== -1)
     // return array of file objects: [{name, contents, insertion_point}]
     return protos.map(proto => ({
-      name: `${proto.pb_package}.json`,
+      name: `${proto.pb_package}-extended.json`,
       content: JSON.stringify(proto, null, 2)
     }))
   })

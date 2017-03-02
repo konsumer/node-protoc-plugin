@@ -1,4 +1,4 @@
-# node-protoc-plugin
+# [node-protoc-plugin](https://www.npmjs.com/package/protoc-plugin)
 
 Create protoc code-generation plugins easily in nodejs
 

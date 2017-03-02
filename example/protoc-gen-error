@@ -5,5 +5,5 @@
 const protocPlugin = require('../src/index')
 
 protocPlugin(protos => protos.map(proto => {
-  return Promise.reject('expected error.')
+  return Promise.reject(new Error('expected error.'))
 }))

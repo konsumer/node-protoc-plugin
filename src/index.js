@@ -53,8 +53,8 @@ const simplePlugin = (cb) => CodeGeneratorRequest()
     return req.protoFileList.filter(p => req.fileToGenerateList.indexOf(p.name) !== -1)
   })
   .then(cb)
-  .catch(CodeGeneratorResponseError())
   .then(CodeGeneratorResponse())
+  .catch(CodeGeneratorResponseError())
 
 module.exports = simplePlugin
 module.exports.CodeGeneratorRequest = CodeGeneratorRequest

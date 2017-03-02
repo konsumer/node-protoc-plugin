@@ -29,9 +29,5 @@
     "buffer-to-uint8array": "^1.1.0",
     "google-protobuf": "^3.2.0",
     "stream-to-promise": "^2.2.0"
-  },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
   }
 }

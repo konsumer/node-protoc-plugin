@@ -1,6 +1,6 @@
 {
   "name": "protoc-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create protoc code-generation plugins easily in nodejs",
   "main": "src/index.js",
   "scripts": {

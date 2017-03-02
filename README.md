@@ -40,4 +40,4 @@ If you need more from the incoming stdin `CodeGeneratorRequest` have a look at `
 
 ### extensions
 
-I am currently including `google/api/annotations` proto file, so gRPC-annotions will work (for example see `proto/helloworld.proto`)
+I am currently including `google/api/annotations` proto file, so gRPC-annotions will work (for example see `proto/helloworld.proto`) For any other extensions, you will need to generte the `google-protobuf` representation, and require it before parsing. You can easily generate them with a command like this: `protoc --js_out=import_style=commonjs,binary:YOURDIR/ -I PROTO_DIR/ PROTO_DIR/YOUR_FILE.proto proto/google/api/annotations.proto`

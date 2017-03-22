@@ -54,4 +54,4 @@ then require like this:
 require('./NAMESPACE_pb')
 ```
 
-You can see how I have done this with `google/api/annotations_pb` in `index.js`.
+You can see how I have done this with [`google/api/annotations_pb` in `index.js`](https://github.com/konsumer/node-protoc-plugin/blob/master/src/index.js#L6).

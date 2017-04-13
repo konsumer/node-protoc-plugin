@@ -29,6 +29,13 @@ protoc \
   ${DIR}/../proto/helloworld.proto \
   --express_out=${DIR}/../generated
 
+# test postman generator
+protoc \
+  --plugin=${DIR}/protoc-gen-postman \
+  -I ${DIR}/../proto \
+  ${DIR}/../proto/helloworld.proto \
+  --postman_out=${DIR}/../generated
+
 # make an error
 # protoc \
 #   --plugin=${DIR}/protoc-gen-error \

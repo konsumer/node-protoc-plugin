@@ -56,7 +56,31 @@ const simplePlugin = (cb) => CodeGeneratorRequest()
   .then(CodeGeneratorResponse())
   .catch(CodeGeneratorResponseError())
 
+/**
+ * Find leadingComments in locationList, by pathList
+ * @param  {number[]} path       path of comment
+ * @param  {object} locationList comment optioct from protobuf
+ * @return {string}              the comment that you requested
+ * examples paths:
+ * [4, m] - message comments
+ * [4, m, 2, f] - field comments in message
+ * [6, s] - service comments
+ * [6, s, 2, r] - rpc comments in service
+ */
+const findCommentByPath = (path, locationList) => (
+  (locationList.filter(l => {
+    if (l.pathList.length !== path.length) return false
+    let answer = true
+    for (let i in path) { answer = answer && path[i] === l.pathList[i] }
+    return answer
+  })
+  .map(l => l.leadingComments)
+  .pop() || '')
+  .trim()
+)
+
 module.exports = simplePlugin
 module.exports.CodeGeneratorRequest = CodeGeneratorRequest
 module.exports.CodeGeneratorResponse = CodeGeneratorResponse
 module.exports.CodeGeneratorResponseError = CodeGeneratorResponseError
+module.exports.findCommentByPath = findCommentByPath

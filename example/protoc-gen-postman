@@ -1,0 +1,74 @@
+#! /usr/bin/env node
+
+/**
+ * This will generate a Postman tester file for gRPC
+ */
+
+const protocPlugin = require('../src/index')
+const findCommentByPath = protocPlugin.findCommentByPath
+
+protocPlugin(protos => {
+  return protos.map(proto => {
+    const out = {
+      variables: [],
+      info: {
+        name: proto.pb_package,
+        description: `Postman collection generated for ${proto.name} on ${new Date()}`,
+        schema: 'https://schema.getpostman.com/json/collection/v2.0.0/collection.json'
+      },
+      item: []
+    }
+    // const messages = {}
+    // const enums = {}
+    // proto.messageTypeList.forEach(m => { messages[ m.name ] = m })
+    // proto.enumTypeList.forEach(e => { enums[ e.name ] = e.valueList })
+    out.item = out.item.concat(proto.serviceList.map((service, s) => ({
+      name: service.name,
+      description: findCommentByPath([6, s], proto.sourceCodeInfo.locationList),
+      item: service.methodList.filter(method => method.options && method.options.http).map((method, m) => {
+        let hmethod = 'GET'
+        let hurl = method.options.http.get
+        if (method.options.http.post !== '') {
+          hmethod = 'POST'
+          hurl = method.options.http.post
+        }
+        if (method.options.http.put !== '') {
+          hmethod = 'PUT'
+          hurl = method.options.http.put
+        }
+        if (method.options.http.pb_delete !== '') {
+          hmethod = 'DELETE'
+          hurl = method.options.http.pb_delete
+        }
+        const info = {
+          'name': method.name,
+          'event': [],
+          'request': {
+            'url': `https://localhost:4300${hurl}`,
+            'method': hmethod,
+            'header': [
+              {
+                'key': 'Content-Type',
+                'value': 'application/json',
+                'description': ''
+              }
+            ],
+            'body': {},
+            'description': findCommentByPath([6, s, 2, m], proto.sourceCodeInfo.locationList)
+          },
+          'response': []
+        }
+
+        // TODO: body/url params from message-type
+        return info
+      })
+    })))
+    return {
+      name: `${proto.pb_package}.postman_collection`,
+      content: JSON.stringify(out, null, 2)
+    }
+  })
+})
+.catch((err) => {
+  console.error(err)
+})

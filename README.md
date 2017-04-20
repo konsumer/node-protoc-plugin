@@ -36,6 +36,74 @@ If you put it in your path, you don't need the `--plugin=protoc-gen-NAME` part.
 
 > **PRO TIP** - use [npm's `bin`](https://docs.npmjs.com/files/package.json#bin) in your package.json to get your plugin script installed, cross-platform, in the user's path.
 
+## `findCommentByPath`
+
+There is a utility included for finding comments in various places in the protobuf file. It's a lil obtuse, but you can look in [the spec](https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto#L720-L799) for more info.
+
+Here are some `locationList` addresses I use a lot in protoc plugins:
+
+```
+ * [4, m] - message comments
+ * [4, m, 2, f] - field comments in message
+ * [6, s] - service comments
+ * [6, s, 2, r] - rpc comments in service
+```
+
+where:
+
+* `m` - the method count in the proto, from index 0
+* `f` - the field-count in the method, from index 0
+* `s` - the service definition in the proto, from index 0
+* `r` - the RPC definition in the service, from index 0
+
+like this:
+
+```proto
+// [4, 0] is right here 
+message MyMessage {
+  // [4, 0, 2, 0] is right here
+  int32 field1 = 1;
+}
+
+// [6, 0] is right here
+service MyService {
+  // [6, 0, 2, 0] is here!
+  rpc (MyMessage) returns (MyMessage);
+}
+```
+
+There are more addresses, but you will have to look at the [the spec](https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto#L720-L799) to figure it out.
+
+### usage
+
+```js
+const protocPlugin = require('protoc-plugin')
+const findCommentByPath = protocPlugin.findCommentByPath
+
+// output comments for services & messages to stderr
+protocPlugin(protos => {
+  protos.forEach(proto => {
+    proto.serviceList.forEach((service, s) => {
+      console.error('SERVICE', service.name, findCommentByPath([6, s], proto.sourceCodeInfo.locationList))
+      service.methodList.forEach((rpc, r) => {
+        console.error('RPC', rpc.name, findCommentByPath([6, s, 2, r], proto.sourceCodeInfo.locationList))
+      })
+    })
+    proto.messageList.forEach((message, m) => {
+      console.error('MESSAGE', message.name, findCommentByPath([4, m], proto.sourceCodeInfo.locationList))
+      message.fieldList.forEach((field, f) => {
+        console.error('FIELD', field.name, findCommentByPath([4, m, 2, f], proto.sourceCodeInfo.locationList))
+      })
+    })
+  })
+  
+  // no files written
+  return []
+})
+
+```
+
+
 ## advanced usage
 
 If you need more from the incoming stdin `CodeGeneratorRequest` have a look at `example/protoc-gen-extendedlogger`.
